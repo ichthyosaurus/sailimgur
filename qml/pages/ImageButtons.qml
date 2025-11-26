@@ -2,7 +2,7 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 Row {
-    property var iconSize: Theme.itemSizeSmall;
+    readonly property int iconSize: Theme.itemSizeSmall;
 
     height: iconSize + 2 * Theme.paddingMedium;
 
@@ -20,34 +20,20 @@ Row {
     }
 
     IconButton {
-        id: dlIcon;
-        icon.width: parent.iconSize;
-        icon.height: parent.iconSize;
-        icon.source: constant.iconSave;
+        id: dlIcon
 
-        visible: !savingInProgress
+        enabled: visible && !savingInProgress
+
+        icon {
+            width: parent.iconSize
+            height: parent.iconSize
+            source: savingInProgress ? constant.iconSaving : constant.iconSave
+        }
 
         onClicked: {
             savingInProgress = true;
-            if (type === "image/gif" && size && size.indexOf("MiB") > -1) {
-                var sizeNo = size.replace(" MiB", "");
-                if (parseInt(sizeNo) > settings.maxGifSize) {
-                    sailimgurMgr.saveImage(mp4);
-                } else {
-                    sailimgurMgr.saveImage(link_original);
-                }
-            } else {
-                sailimgurMgr.saveImage(link_original);
-            }
+            sailimgurMgr.saveImage(downloadUrl)
         }
-    }
-
-    IconButton {
-        icon.width: parent.iconSize;
-        icon.height: parent.iconSize;
-        icon.source: constant.iconSaving;
-
-        visible: savingInProgress;
     }
 
     IconButton {
@@ -107,15 +93,12 @@ Row {
                 infoBanner.showText("Image saved as " + name);
             }
             savingInProgress = false;
-            // FIXME: TypeError: Cannot read property of null
-//            dlIcon.icon.source = constant.iconSaveDone;
         }
         function errorImageExists(name) {
             if (infoBanner) {
                 infoBanner.showText("Image already saved as " + name);
             }
             savingInProgress = false;
-//            dlIcon.icon.source = constant.iconSaveDone;
         }
     }
 

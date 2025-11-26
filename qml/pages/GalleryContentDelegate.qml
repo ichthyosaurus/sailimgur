@@ -7,10 +7,21 @@ Item {
     property Item contextMenu;
     property bool menuOpen: contextMenu != null && contextMenu.parent === galleryContentDelegate;
     property string contextLink;
-    property bool savingInProgress: false;
     property int itemIndex;
     property bool isSlideshow: false;
     property int totalImages: 0;
+
+    readonly property string downloadUrl: {
+        if (type == String("image/gif")
+                && size
+                && size.indexOf("MiB") > -1
+                && parseInt(size.replace(" MiB", "")) > settings.maxGifSize) {
+            return mp4
+        } else {
+            return link_original
+        }
+    }
+    property bool savingInProgress: sailimgurMgr.isDownloading(downloadUrl)
 
     width: albumListView.width;
     height: galleryContainer.height;
