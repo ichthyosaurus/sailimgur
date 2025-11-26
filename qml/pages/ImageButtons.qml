@@ -1,3 +1,10 @@
+/*
+ * This file is part of harbour-sailimgur.
+ * SPDX-FileCopyrightText: 2020-2025 Mirian Margiani
+ * SPDX-FileCopyrightText: 2014 Marko Wallin
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
+
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
