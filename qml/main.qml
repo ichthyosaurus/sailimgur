@@ -46,50 +46,15 @@ ApplicationWindow {
 
     AccountPage { id: accountPage; }
 
-    Rectangle {
-        id: infoBanner;
-        y: 4 * Theme.paddingMedium;
-        z: 1;
-        width: parent.width;
-
-        height: infoLabel.height + 2 * Theme.paddingMedium;
-        color: Theme.highlightBackgroundColor;
-        opacity: 0;
-        visible: false;
-
-        Label {
-            id: infoLabel;
-            text : ''
-            font.pixelSize: Screen.sizeCategory >= Screen.Large
-                                ? constant.fontSizeSmall : constant.fontSizeXSmall
-            width: parent.width - 2 * Theme.paddingSmall
-            anchors.top: parent.top;
-            anchors.topMargin: Theme.paddingMedium;
-            y: 4 * Theme.paddingMedium;
-            horizontalAlignment: Text.AlignHCenter;
-            wrapMode: Text.WrapAnywhere;
-
-            MouseArea {
-                anchors.fill: parent;
-                onClicked: {
-                    infoBanner.opacity = 0.0;
-                    infoBanner.visible = false;
-                }
-            }
-        }
+    QtObject {
+        id: infoBanner
 
         function showText(text) {
-            infoLabel.text = text;
-            opacity = 0.9;
-            infoBanner.visible = true;
-            //console.log("infoBanner: " + text);
-            closeTimer.restart();
+            Notices.show(text, 3000, Notice.Top)
         }
 
         function showError(errorMessage) {
-            infoLabel.text = errorMessage;
-            opacity = 0.9;
-            infoBanner.visible = true;
+            Notices.show(errorMessage, 3000, Notice.Center)
         }
 
         function showHttpError(errorCode, errorMessage) {
@@ -138,17 +103,6 @@ ApplicationWindow {
                     showError("Error: " + errorMessage + " (" + errorCode + ")");
             }
             */
-        }
-
-        Behavior on opacity { FadeAnimation {} }
-
-        Timer {
-            id: closeTimer;
-            interval: 3000;
-            onTriggered: {
-                infoBanner.opacity = 0.0;
-                infoBanner.visible = true;
-            }
         }
     }
 
