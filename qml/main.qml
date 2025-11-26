@@ -133,8 +133,15 @@ ApplicationWindow {
         onSaveImageSucceeded: {
             Notices.show(qsTr("Image saved as “%1”").arg(name), 5000, Notice.Bottom)
         }
+        onSaveImageFailed: {
+            Notices.show(qsTr("Failed to download “%1”").arg(name), 5000, Notice.Bottom)
+        }
         onErrorImageExists: {
             Notices.show(qsTr("Image already saved as “%1”").arg(name), 5000, Notice.Bottom)
+        }
+        onErrorSavingDisabled: {
+            // TODO recommend to check the logs
+            Notices.show(qsTr("Saving images is not possible"), 5000, Notice.Bottom)
         }
     }
 

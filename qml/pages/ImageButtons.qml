@@ -17,6 +17,7 @@ Row {
     IconButton {
         id: dlIcon
 
+        visible: sailimgurMgr.canDownload
         enabled: visible && !savingInProgress
 
         icon {
@@ -83,6 +84,8 @@ Row {
     Connections {
         target: sailimgurMgr
         onSaveImageSucceeded: if (url == downloadUrl) savingInProgress = false
+        onSaveImageFailed: if (url == downloadUrl) savingInProgress = false
         onErrorImageExists: if (url == downloadUrl) savingInProgress = false
+        onErrorSavingDisabled: if (url == downloadUrl) savingInProgress = false
     }
 }
