@@ -14,11 +14,6 @@ Row {
 
     spacing: Theme.paddingLarge;
 
-    Component.onCompleted: {
-        sailimgurMgr.saveImageSucceeded.connect(internal.saveImageSucceeded);
-        sailimgurMgr.errorImageExists.connect(internal.errorImageExists);
-    }
-
     IconButton {
         id: dlIcon
 
@@ -85,21 +80,9 @@ Row {
         }
     }
 
-    QtObject {
-        id: internal;
-
-        function saveImageSucceeded(name) {
-            if (infoBanner) {
-                infoBanner.showText("Image saved as " + name);
-            }
-            savingInProgress = false;
-        }
-        function errorImageExists(name) {
-            if (infoBanner) {
-                infoBanner.showText("Image already saved as " + name);
-            }
-            savingInProgress = false;
-        }
+    Connections {
+        target: sailimgurMgr
+        onSaveImageSucceeded: if (url == downloadUrl) savingInProgress = false
+        onErrorImageExists: if (url == downloadUrl) savingInProgress = false
     }
-
 }

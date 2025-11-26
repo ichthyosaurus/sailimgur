@@ -127,9 +127,18 @@ ApplicationWindow {
         }
     }
 
+    Connections {
+        target: sailimgurMgr
+
+        onSaveImageSucceeded: {
+            Notices.show(qsTr("Image saved as “%1”").arg(name), 5000, Notice.Bottom)
+        }
+        onErrorImageExists: {
+            Notices.show(qsTr("Image already saved as “%1”").arg(name), 5000, Notice.Bottom)
+        }
+    }
+
     Component.onCompleted: {
         settings.loadSettings();
     }
 }
-
-
